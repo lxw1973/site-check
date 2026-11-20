@@ -20,9 +20,17 @@
 ## 用法
 
 ```bash
+# 直连（海外/VPN 环境较快）
 curl -sSL https://raw.githubusercontent.com/lxw1973/site-check/main/site_check.sh -o site_check.sh
+
+# 国内推荐：jsDelivr 镜像
+curl -sSL https://cdn.jsdelivr.net/gh/lxw1973/site-check@main/site_check.sh -o site_check.sh
+
 chmod +x site_check.sh
 ./site_check.sh https://example.com/
+
+# 第二个参数可自定义对照组（默认百度）
+./site_check.sh https://example.com/ https://www.gov.cn/
 ```
 
 也可以克隆：
