@@ -1,0 +1,22 @@
+# notify.conf 示例 —— 复制成 notify.conf 后填值
+# 权限务必 600：chmod 600 notify.conf
+# 留空的通道会自动跳过
+
+# 1) macOS 本地通知（默认开；非 macOS 自动跳过）
+MACOS_NOTIFY=1
+
+# 2) Server酱（微信最省事）：https://sct.ftqq.com 微信扫码 → 复制 SendKey
+SERVERCHAN_KEY=
+
+# 3) PushPlus（微信备选）：https://www.pushplus.plus 微信扫码 → 复制 token
+PUSHPLUS_TOKEN=
+
+# 4) 企业微信群机器人：群设置 → 群机器人 → 添加 → 复制 Webhook 地址
+WECOM_WEBHOOK=
+
+# 5) 邮件（SMTP over SSL；用授权码/应用专用密码，不是登录密码）
+SMTP_HOST=
+SMTP_PORT=465
+SMTP_USER=
+SMTP_PASS=
+SMTP_TO=

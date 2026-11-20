@@ -98,6 +98,35 @@ F12 → Network → 勾上 Disable cache → Ctrl+Shift+R（Mac: Cmd+Shift+R）
 
 白屏 ≠ 断网。真正的断网会给你 `ERR_CONNECTION_REFUSED`、`ERR_NAME_NOT_RESOLVED` 这类明确错误码；白屏 + 一个图标，恰恰是 CDN/WAF 错误页的典型长相。
 
+## 附带工具
+
+| 脚本 | 用途 |
+|---|---|
+| `site_check.sh` | 一次性判断：网站挂了还是你网坏了（DNS → 状态码 → 响应头 → 对照组） |
+| `watch_probe.sh` | 长期盯一个 URL，**只在状态变化时说话**（521/000 静默） |
+| `notify_push.sh` | 一条消息推多通道：macOS 通知 / Server酱（微信）/ PushPlus / 企业微信机器人 / 邮件 |
+| `notify.conf.example` | 通知通道配置模板（复制成 `notify.conf`，`chmod 600`） |
+
+### 用法：给挂掉的站点挂个告警
+
+```bash
+curl -sSL https://raw.githubusercontent.com/lxw1973/site-check/main/watch_probe.sh -o watch_probe.sh
+curl -sSL https://raw.githubusercontent.com/lxw1973/site-check/main/notify_push.sh -o notify_push.sh
+curl -sSL https://raw.githubusercontent.com/lxw1973/site-check/main/notify.conf.example -o notify.conf
+chmod +x watch_probe.sh notify_push.sh
+chmod 600 notify.conf
+# 填 notify.conf 里的 SERVERCHAN_KEY（微信）后：
+./watch_probe.sh https://example.com/submit ./notify_push.sh
+```
+
+挂到 cron（每 30 分钟）：
+
+```cron
+*/30 * * * * /path/to/watch_probe.sh https://example.com/submit /path/to/notify_push.sh >> /tmp/watch.log 2>&1
+```
+
+设计要点：**空输出 = 静默**。521/000 这类常态故障什么都不发，只在 200（恢复）或 404/502/504（状态变化）时通知。
+
 ## 说明
 
 - 本脚本只做**只读探测**：一次 DNS 查询、一次 HEAD 级请求、一次对照请求，不构造任何攻击载荷、不扫描路径、不做爆破。
